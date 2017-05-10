@@ -1,6 +1,6 @@
 {
-  "name": "get-started-node",
-  "main": "server.js",
+  "name": "lyrics-api",
+  "main": "app.js",
   "description": "An introduction to developing Node.js apps on the Bluemix platform",
   "version": "0.1.1",
   "private": false,
@@ -8,7 +8,7 @@
     "node": "4.*"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -19,7 +19,8 @@
     "cfenv": "^1.0.x",
     "cloudant": "^1.7.1",
     "dotenv": "^4.0.0",
-    "express": "^4.14.1"
+    "express": "^4.14.1",
+    "request": "^2.81.0"
   },
   "author": "IBM Corp",
   "license": "Apache-2.0"

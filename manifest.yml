@@ -1,5 +1,6 @@
 ---
 applications:
- - name: GetStartedNode
-   random-route: true
-   memory: 256M
+ - name: Lyrics
+   random-route: false
+   host: lyrics-api
+   memory: 128M
