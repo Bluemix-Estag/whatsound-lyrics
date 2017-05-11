@@ -7,7 +7,7 @@ Endpoint to get a JSON object of watson lyrics response
 REST API example:
 
 ```
-    GET https://lyrics-api.mybluemix.net/vagalume/lyrics?track=Shape%20Of%20You&artist=Ed%20Sheeran
+    GET https://lyrics-api.mybluemix.net/whatsound/api/v1/vagalume/lyrics/values?track=Shape%20Of%20You&artist=Ed%20Sheeran
 ```
 
 Requesting a JSON Object having context artist and music, to get Lyric's for Watson.
