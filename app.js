@@ -3,6 +3,7 @@ var app = express();
 var cfenv = require("cfenv");
 var request = require('request');
 var bodyParser = require('body-parser')
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -11,7 +12,7 @@ app.use(bodyParser.json())
 
 var mydb;
 
-app.get('/v1/vagalume/lyrics', function (req, res) {
+app.get('/whatsound/api/v1/vagalume/lyrics/values', function (req, res) {
     console.log(req.query);
     var artist = req.query.artist;
     var track =  req.query.track;
@@ -32,20 +33,20 @@ app.get('/v1/vagalume/lyrics', function (req, res) {
                 var message = '';
                 var status = true;
                 var track = null;
-                var target = null;
+                var translation = null;
              //   console.log(JSON.stringify(info['mus'][0]));
                 if(JSON.stringify(info['mus']) == undefined){
                         message = 'Not Found';
                         status = false;
                     }else{
-                        track = JSON.stringify(info['mus'][0]['text']);
-                        target = JSON.stringify(info['mus'][0]['translate']) == undefined? null:JSON.stringify(info['mus'][0]['translate'][0]['text']);
+                        track = (info['mus'][0]['text']);
+                        translation = (info['mus'][0]['translate']) == undefined? null:(info['mus'][0]['translate'][0]['text']);
                     }
                 var json = {
                     "lyrics": {
                         
                     "track": track ,
-                    "target": target 
+                    "translation": translation 
                     
                     },
                     
@@ -61,6 +62,44 @@ app.get('/v1/vagalume/lyrics', function (req, res) {
 
     });
 
+app.get('/whatsound/api/v1/vagalume/hotspots', function (req, res) {
+    console.log(req.query);
+    console.log("Entrou");
+    // tipo = tracks, artists, albums
+    var options = {
+        url: "https://api.vagalume.com.br/hotspots.php?apikey={4861cdfc7de4ae451f9918bcbd040f87}",
+        headers: {
+            Accept: 'text/json'
+        }
+    };
+    console.log(options.url);
+    
+    function callback(error, response, body) {
+        if (!error && response.statusCode == 200) {
+            var info = JSON.parse(body);
+            if (info != ' ') {
+                var result = {
+                    "message": ' ' ,
+                    "status" : true,
+                    "trend" : []
+                }
+             //   console.log(JSON.stringify(info['mus'][0]));
+                if(JSON.stringify(info['hotspots']) == undefined){
+                        result.message = 'Not Found';
+                        result.status = false;
+                    }else{
+                        for(var items in Object.keys(info['hotspots'])){
+                            result.trend.push({"artist": (JSON.stringify(info['hotspots'][items]['title'])).replace(/\"/g," "),"name": (JSON.stringify(info['hotspots'][items]['musTitle'])).replace(/\"/g,"")});
+                        }
+                    }
+                }
+                 res.send(result);
+                    
+            }
+        }
+        request(options, callback);
+
+    });
 
 // load local VCAP configuration  and service credentials
 var vcapLocal;
